@@ -3,6 +3,7 @@
 #1-9, K — параметр целого типа, являющийся одновременно входным и выходным).
 #С помощью этой функции последовательно добавить к данному числу K слева
 #данные цифры D1 и D2, выводя результат каждого добавления.
+
 def AddLeftDigit(D, K):
     """
     Добавляет к числу K слева цифру D.
@@ -38,12 +39,20 @@ def get_valid_int(prompt, min_value=None, max_value=None):
         except ValueError:
             print("Ошибка ввода. Пожалуйста, введите целое число.")
 
-K = get_valid_int("Введите исходное число K: ")
-D1 = get_valid_int("Введите первую цифру D1 для добавления: ", 1, 9)
-D2 = get_valid_int("Введите вторую цифру D2 для добавления: ", 1, 9)
+def main():
+    try:
+        K = get_valid_int("Введите исходное число K: ")
+        D1 = get_valid_int("Введите первую цифру D1 для добавления: ", 1, 9)
+        D2 = get_valid_int("Введите вторую цифру D2 для добавления: ", 1, 9)
 
-new_K = AddLeftDigit(D1, K)
-print(f"После добавления цифры {D1}: {new_K}")
+        new_K = AddLeftDigit(D1, K)
+        print(f"После добавления цифры {D1}: {new_K}")
 
-final_result = AddLeftDigit(D2, new_K)
-print(f"После добавления цифры {D2}: {final_result}")
+        final_result = AddLeftDigit(D2, new_K)
+        print(f"После добавления цифры {D2}: {final_result}")
+    except ValueError as e:
+        print(f"Произошла ошибка: {e}. Пожалуйста, проверьте введенные значения.")
+
+if __name__ == "__main__":
+    main()
+

@@ -1,54 +1,34 @@
-def process_poem_file():
+import sys
+
+
+def process_poem():
     try:
-        source_filename = 'text18-28.txt'
-        poem = [
-            "Я помню чудное мгновенье:",
-            "Передо мной явилась ты,",
-            "Как мимолетное виденье,",
-            "Как гений чистой красоты.",
-            "",
-            "В томленьях грусти безнадежной,",
-            "В тревогах шумной суеты,",
-            "Звучал мне долго голос нежный",
-            "И снились милые черты."
-        ]
+        encodings = ['utf-8', 'utf-16', 'cp1251', 'iso-8859-1']
 
-        with open(source_filename, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(poem))
-
-        with open(source_filename, 'r', encoding='utf-8') as f:
-            content = f.read()
-            print("Содержимое файла:")
-            print(content)
-            print(f"\nКоличество символов в тексте: {len(content)}")
-
-        while True:
+        for encoding in encodings:
             try:
-                n = int(input("\nВведите номер строки после которой вставить фразу (1-{}): "
-                              .format(len(poem))))
-                if 1 <= n <= len(poem):
-                    break
-                print("Номер строки должен быть в диапазоне 1-{}".format(len(poem)))
-            except ValueError:
-                print("Пожалуйста, введите целое число")
+                with open('text18-29.txt', 'r', encoding=encoding) as f:
+                    lines = f.readlines()
+                    content = ''.join(lines)
+                break
+            except UnicodeDecodeError:
+                continue
+        else:
+            raise ValueError("Не удалось определить кодировку файла")
 
-        phrase = input("Введите фразу для вставки: ")
+        print(content)
+        print(len(content))
 
-        with open(source_filename, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+        if len(lines) >= 4:
+            lines.insert(2, lines.pop())
 
-        new_filename = 'modified_poem.txt'
-        with open(new_filename, 'w', encoding='utf-8') as f:
-            for i, line in enumerate(lines, 1):
-                f.write(line)
-                if i == n:
-                    f.write(phrase + '\n')
+        with open('poem_modified.txt', 'w', encoding='utf-8') as f:
+            f.writelines(lines)
 
-        print(f"\nФайл '{new_filename}' успешно создан с вставленной фразой после строки {n}")
-
-    except IOError:
-        print("Ошибка ввода-вывода при работе с файлом")
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        sys.stderr.write(f"Error: {e}\n")
+        sys.exit(1)
 
-process_poem_file()
+
+if __name__ == "__main__":
+    process_poem()

@@ -1,18 +1,22 @@
-magistr  = {"Лермонтов", "Лермонтов", "Пушкин", "Тютчев"}
-DonKnigi  = {"Толстой", "Грибоедов", "Чехов", "Пушкин"}
-BoockMarket = {"Пушкин", "Достоевский", "Маяковский"}
-Galery = {"Чехов", "Тютчев", "Пушкин"}
+def find_book_stores():
+    try:
+        stores = {
+            'Магистр': {'Лермонтов', 'Достоевский', 'Пушкин', 'Тютчев'},
+            'ДомКниги': {'Толстой', 'Грибоедов', 'Чехов', 'Пушкин'},
+            'БукМаркет': {'Пушкин', 'Достоевский', 'Маяковский'},
+            'Галерея': {'Чехов', 'Тютчев', 'Пушкин'}
+        }
 
-markets = []
-if "Грибоедова" and "Маяковский" not in magistr:
-    markets.append("Магистр")
-if "Грибоедова" and "Маяковский" not in DonKnigi:
-    markets.append("ДомКниги")
-if "Грибоедова" and "Маяковский" not in BoockMarket:
-    markets.append("БукМаркет")
-if "Грибоедова" and "Маяковский" not in Galery:
-    markets.append("Галерея")
+        pushkin_stores = {store for store, books in stores.items() if 'Пушкин' in books}
+        print("Магазины с книгами Пушкина:", ', '.join(pushkin_stores))
 
+        tytchev_stores = {store for store, books in stores.items() if 'Тютчев' in books}
+        print("Магазины с книгами Тютчева:", ', '.join(tytchev_stores))
 
+        both_stores = pushkin_stores & tytchev_stores
+        print("\nМагазины, где есть и Пушкин, и Тютчев:", ', '.join(both_stores) if both_stores else "таких магазинов нет")
 
-print("Магазины, где нельзя приобрести книги Грибоедова и Маяковского:", markets)
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+find_book_stores()

@@ -7,18 +7,14 @@ def find_book_stores():
             'Галерея': {'Чехов', 'Тютчев', 'Пушкин'}
         }
 
-        pushkin_stores = [store for store, books in stores.items()
-                         if 'Пушкин' in books]
+        pushkin_stores = {store for store, books in stores.items() if 'Пушкин' in books}
         print("Магазины с книгами Пушкина:", ', '.join(pushkin_stores))
 
-        tytchev_stores = [store for store, books in stores.items()
-                         if 'Тютчев' in books]
+        tytchev_stores = {store for store, books in stores.items() if 'Тютчев' in books}
         print("Магазины с книгами Тютчева:", ', '.join(tytchev_stores))
 
-        both_stores = [store for store, books in stores.items()
-                      if {'Пушкин', 'Тютчев'}.issubset(books)]
-        print("\nМагазины, где есть и Пушкин, и Тютчев:",
-              ', '.join(both_stores) if both_stores else "таких магазинов нет")
+        both_stores = pushkin_stores & tytchev_stores
+        print("\nМагазины, где есть и Пушкин, и Тютчев:", ', '.join(both_stores) if both_stores else "таких магазинов нет")
 
     except Exception as e:
         print(f"Произошла ошибка: {e}")

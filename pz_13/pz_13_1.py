@@ -1,18 +1,19 @@
-def replace_last_column():
-    matrix = [[1, 2, 3],
-              [4, 5, 6],
-              [7, 8, 9]]
+import random
 
-    print("Исходная матрица:")
-    for row in matrix:
-        print(row)
+rows = int(input("Введите количество строк: "))
+cols = int(input("Введите количество столбцов: "))
 
-    modified = [row[:-1] + [-1] for row in matrix]
+matrix = []
+for i in range(rows):
+    row = [random.randint(-10, 10) for _ in range(cols)]
+    matrix.append(row)
 
-    print("Матрица после замены:")
-    for row in modified:
-        print(row)
+print("\nСгенерированная матрица:")
+for row in matrix:
+    print(row)
 
+modified = [row[:-1] + [-1] for row in matrix]
 
-if __name__ == "__main__":
-    replace_last_column()
+print("Матрица после замены:")
+for row in modified:
+    print(row)

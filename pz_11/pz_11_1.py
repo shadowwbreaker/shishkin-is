@@ -1,29 +1,54 @@
-import sys
-
-def process_numbers():
+def process_number_files():
     try:
-        with open('data_1.txt', 'w') as f1:
-            f1.write('-5 10 -3 8 15 -7 20')
-        with open('data_2.txt', 'w') as f2:
-            f2.write('12 -8 6 -5 18 10 -3')
+        with open('file1.txt', 'w', encoding='utf-8') as f1:
+            f1.write("12 -5 8 -3 17 0 -9 4 21")
 
-        with open('data_1.txt') as f1, open('data_2.txt') as f2:
-            nums1 = list(map(int, f1.read().split()))
-            nums2 = list(map(int, f2.read().split()))
+        with open('file2.txt', 'w', encoding='utf-8') as f2:
+            f2.write("-7 14 0 3 -2 8 19 -5 12 -1")
 
-        common = len(set(nums1) & set(nums2))
-        even1 = len([x for x in nums1 if x % 2 == 0])
-        odd2 = len([x for x in nums2 if x % 2 != 0])
+        def read_numbers(filename):
+            with open(filename, 'r', encoding='utf-8') as f:
+                return [int(num) for num in f.read().split()]
 
-        with open('result_numbers.txt', 'w') as f3:
-            f3.write(f"{nums1}\n{nums2}\n")
-            f3.write(f"{len(nums1)} {len(nums2)}\n")
-            f3.write(f"{common}\n")
-            f3.write(f"{even1}\n")
-            f3.write(f"{odd2}\n")
+        nums1 = read_numbers('file1.txt')
+        nums2 = read_numbers('file2.txt')
 
+        avg1 = sum(nums1) / len(nums1) if nums1 else 0
+        avg2 = sum(nums2) / len(nums2) if nums2 else 0
+
+        odd_count1 = sum(1 for num in nums1 if num % 2 != 0)
+        odd_count2 = sum(1 for num in nums2 if num % 2 != 0)
+
+        common_elements = set(nums1) & set(nums2)
+        common_count = len(common_elements)
+
+        with open('result.txt', 'w', encoding='utf-8') as result_file:
+            result_file.write("Элементы первого и второго файлов:\n")
+            result_file.write(f"Первый файл: {', '.join(map(str, nums1))}\n")
+            result_file.write(f"Второй файл: {', '.join(map(str, nums2))}\n\n")
+
+            result_file.write("Среднее арифметическое элементов первого и второго файлов:\n")
+            result_file.write(f"Первый файл: {avg1:.2f}\n")
+            result_file.write(f"Второй файл: {avg2:.2f}\n\n")
+
+            result_file.write("Количество нечетных элементов первого и второго файлов:\n")
+            result_file.write(f"Первый файл: {odd_count1}\n")
+            result_file.write(f"Второй файл: {odd_count2}\n\n")
+
+            result_file.write("Элементы общие для двух файлов:\n")
+            result_file.write(f"{', '.join(map(str, common_elements)) or 'Нет общих элементов'}\n\n")
+
+            result_file.write("Количество элементов, общих для двух файлов:\n")
+            result_file.write(f"{common_count}\n")
+
+        print("Обработка файлов завершена. Результаты сохранены в result.txt")
+
+    except FileNotFoundError:
+        print("Ошибка: Файл не найден")
+    except ValueError:
+        print("Ошибка: В файле содержатся некорректные данные")
     except Exception as e:
-        sys.stderr.write(f"Error: {e}\n")
+        print(f"Произошла ошибка: {e}")
 
-if __name__ == "__main__":
-    process_numbers()
+
+process_number_files()

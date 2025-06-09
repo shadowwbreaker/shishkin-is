@@ -1,54 +1,30 @@
-def process_poem_file():
-    try:
-        source_filename = 'text18-28.txt'
-        poem = [
-            "Я помню чудное мгновенье:",
-            "Передо мной явилась ты,",
-            "Как мимолетное виденье,",
-            "Как гений чистой красоты.",
-            "",
-            "В томленьях грусти безнадежной,",
-            "В тревогах шумной суеты,",
-            "Звучал мне долго голос нежный",
-            "И снились милые черты."
-        ]
+#2. Из предложенного текстового файла (text18-29.txt) вывести на экран его содержимое,
+#количество символов в тексте. Сформировать новый файл, в который поместить текст в
+#стихотворной форме предварительно поставив последнюю строку между второй и третьей
+def read_file(filename):
+    encodings = ['utf-8', 'utf-16', 'windows-1251']
+    for encoding in encodings:
+        try:
+            with open(filename, 'r', encoding=encoding) as file:
+                return file.readlines()
+        except UnicodeDecodeError:
+            continue
+    raise UnicodeDecodeError(f"Не удалось декодировать файл {filename} с помощью {encodings}")
 
-        with open(source_filename, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(poem))
+lines = read_file('text18-29.txt')
 
-        with open(source_filename, 'r', encoding='utf-8') as f:
-            content = f.read()
-            print("Содержимое файла:")
-            print(content)
-            print(f"\nКоличество символов в тексте: {len(content)}")
+print("Содержимое файла:")
+for line in lines:
+    print(line.strip())
 
-        while True:
-            try:
-                n = int(input("\nВведите номер строки после которой вставить фразу (1-{}): "
-                              .format(len(poem))))
-                if 1 <= n <= len(poem):
-                    break
-                print("Номер строки должен быть в диапазоне 1-{}".format(len(poem)))
-            except ValueError:
-                print("Пожалуйста, введите целое число")
+char_count = sum(len(line.strip()) for line in lines)
+print(f"\nКоличество символов в тексте: {char_count}")
 
-        phrase = input("Введите фразу для вставки: ")
+if len(lines) >= 3:
+    last_line = lines.pop()
+    lines.insert(2, last_line)
 
-        with open(source_filename, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+with open('modified_text18-29.txt', 'w', encoding='utf-8') as file:
+    file.writelines(lines)
 
-        new_filename = 'modified_poem.txt'
-        with open(new_filename, 'w', encoding='utf-8') as f:
-            for i, line in enumerate(lines, 1):
-                f.write(line)
-                if i == n:
-                    f.write(phrase + '\n')
-
-        print(f"\nФайл '{new_filename}' успешно создан с вставленной фразой после строки {n}")
-
-    except IOError:
-        print("Ошибка ввода-вывода при работе с файлом")
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
-
-process_poem_file()
+print("\nИзмененный текст сохранен в файл 'modified_text18-29.txt'")
